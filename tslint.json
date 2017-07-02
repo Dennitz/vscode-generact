@@ -1,0 +1,10 @@
+{
+  "extends": "tslint:latest",
+  "rules": {
+    "interface-name": [true, "never-prefix"],
+    "object-literal-sort-keys": false,
+    "no-console": [false],
+    "quotemark": [true, "single"],
+    "arrow-parens": false
+  }
+}
