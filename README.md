@@ -3,7 +3,7 @@
 Generate React components by replicating your own.  
 This extension integrates [generact](https://github.com/diegohaz/generact) into VS Code.
 
-![screen recording](https://user-images.githubusercontent.com/18401729/27801088-7db0c7ae-601c-11e7-842d-da023ba74cfe.gif)
+![screenrecording](https://user-images.githubusercontent.com/18401729/27802510-728fa28e-6024-11e7-89ee-031f0a4e0ca9.gif)
 
 ## Usage
 
