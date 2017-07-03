@@ -79,4 +79,6 @@ function folderPrompt(originalFolder: string, newName: string) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+  // nothing to be done
+}
