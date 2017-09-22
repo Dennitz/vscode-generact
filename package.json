@@ -1,48 +1,48 @@
 {
-  "name": "vscode-generact",
-  "license": "MIT",
-  "displayName": "generact",
-  "description": "Generate React components by replicating your own.",
-  "version": "1.0.0",
-  "publisher": "Dennitz",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Dennitz/vscode-generact"
-  },
-  "icon": "assets/logo.png",
-  "engines": {
-    "vscode": "^1.13.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:extension.generact"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "commands": [
-      {
-        "command": "extension.generact",
-        "title": "Generact: Replicate React component"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.40",
-    "mocha": "^2.3.3",
-    "tslint": "^5.4.3",
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0"
-  },
-  "dependencies": {
-    "generact": "^0.3.1"
-  }
+    "name": "vscode-generact",
+    "license": "MIT",
+    "displayName": "generact",
+    "description": "Generate React components by replicating your own.",
+    "version": "1.0.1",
+    "publisher": "Dennitz",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Dennitz/vscode-generact"
+    },
+    "icon": "assets/logo.png",
+    "engines": {
+        "vscode": "^1.13.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.generact"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.generact",
+                "title": "Generact: Replicate React component"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.32",
+        "@types/node": "^6.0.40",
+        "mocha": "^2.3.3",
+        "tslint": "^5.4.3",
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0"
+    },
+    "dependencies": {
+        "generact": "^0.3.1"
+    }
 }
