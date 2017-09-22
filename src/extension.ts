@@ -2,7 +2,7 @@
 import {
   getComponentFiles,
   getComponentFolder,
-  performReplication,
+  replicate,
 } from 'generact';
 import * as vscode from 'vscode';
 
@@ -46,7 +46,7 @@ export function activate(context: vscode.ExtensionContext) {
             getComponentFolder(item.description);
 
           try {
-            await performReplication(
+            await replicate(
               absoluteRoot + item.description,
               { name, folder },
               absoluteRoot,

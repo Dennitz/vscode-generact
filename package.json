@@ -43,6 +43,6 @@
     "vscode": "^1.0.0"
   },
   "dependencies": {
-    "generact": "git://github.com/Dennitz/generact.git"
+    "generact": "^0.3.1"
   }
 }
