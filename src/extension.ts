@@ -1,9 +1,5 @@
 'use strict';
-import {
-  getComponentFiles,
-  getComponentFolder,
-  replicate,
-} from 'generact';
+import { getComponentFiles, getComponentFolder, replicate } from 'generact';
 import * as vscode from 'vscode';
 
 // this method is called when your extension is activated
@@ -16,50 +12,76 @@ export function activate(context: vscode.ExtensionContext) {
     'extension.generact',
     async () => {
       // The code you place here will be executed every time your command is executed
-      const absoluteRoot = vscode.workspace.rootPath;
-      if (!absoluteRoot) {
-        vscode.window.showInformationMessage('You must open a folder first');
-        return;
-      }
+      projectPrompt().then((projectItem: vscode.QuickPickItem | undefined) => {
+        console.log('projectItem', projectItem);
+        if (projectItem) {
+          const root = projectItem.description;
+          componentPrompt(
+            root,
+          ).then(async (componentItem: vscode.QuickPickItem | undefined) => {
+            if (componentItem) {
+              const name = (await namePrompt(componentItem.label)) || '';
+              const folder =
+                (await folderPrompt(
+                  getComponentFolder(componentItem.description),
+                  name,
+                )) || getComponentFolder(componentItem.description);
 
-      const options: vscode.QuickPickOptions = {
-        matchOnDescription: true,
-        placeHolder: 'Which component do you want to replicate?',
-      };
-
-      const components: Promise<vscode.QuickPickItem[]> = getComponentFiles(
-        absoluteRoot,
-        absoluteRoot,
-      ).then(files =>
-        files.map(f => ({
-          label: f.short,
-          description: f.value.substring(absoluteRoot.length), // results in relative path
-        })),
-      );
-
-      vscode.window
-        .showQuickPick(components, options)
-        .then(async (item: vscode.QuickPickItem) => {
-          const name = (await namePrompt(item.label)) || '';
-          const folder =
-            (await folderPrompt(getComponentFolder(item.description), name)) ||
-            getComponentFolder(item.description);
-
-          try {
-            await replicate(
-              absoluteRoot + item.description,
-              { name, folder },
-              absoluteRoot,
-            );
-          } catch (e) {
-            vscode.window.showWarningMessage('An Error occured while writing.');
-            console.log(e);
-          }
-        });
+              try {
+                await replicate(
+                  root + componentItem.description,
+                  { name, folder },
+                  root,
+                );
+              } catch (e) {
+                vscode.window.showWarningMessage(
+                  'An Error occured while writing.',
+                );
+                console.log(e);
+              }
+            }
+          });
+        }
+      });
     },
   );
 
   context.subscriptions.push(disposable);
+}
+
+function projectPrompt() {
+  const options: vscode.QuickPickOptions = {
+    placeHolder: 'Choose a project.',
+  };
+
+  let projects: vscode.QuickPickItem[] = [];
+  if (vscode.workspace.workspaceFolders) {
+    projects = vscode.workspace.workspaceFolders.map(f => ({
+      label: f.name,
+      description: f.uri.fsPath,
+    }));
+  }
+
+  return vscode.window.showQuickPick(projects, options);
+}
+
+function componentPrompt(projectRoot: string) {
+  const options: vscode.QuickPickOptions = {
+    matchOnDescription: true,
+    placeHolder: 'Which component do you want to replicate?',
+  };
+
+  const components: Promise<vscode.QuickPickItem[]> = getComponentFiles(
+    projectRoot,
+    '/',
+  ).then(files =>
+    files.map(f => ({
+      label: f.short,
+      description: f.value.substring(projectRoot.length), // results in relative path
+    })),
+  );
+
+  return vscode.window.showQuickPick(components, options);
 }
 
 function namePrompt(originalName: string) {
