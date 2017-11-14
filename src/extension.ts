@@ -12,37 +12,47 @@ export function activate(context: vscode.ExtensionContext) {
     'extension.generact',
     async () => {
       // The code you place here will be executed every time your command is executed
-      projectPrompt().then((projectItem: vscode.QuickPickItem | undefined) => {
-        console.log('projectItem', projectItem);
-        if (projectItem) {
-          const root = projectItem.description;
-          componentPrompt(
-            root,
-          ).then(async (componentItem: vscode.QuickPickItem | undefined) => {
-            if (componentItem) {
-              const name = (await namePrompt(componentItem.label)) || '';
-              const folder =
-                (await folderPrompt(
-                  getComponentFolder(componentItem.description),
-                  name,
-                )) || getComponentFolder(componentItem.description);
+      if (
+        !vscode.workspace.workspaceFolders ||
+        vscode.workspace.workspaceFolders.length === 0
+      ) {
+        vscode.window.showInformationMessage('You must open a project first.');
+      } else {
+        projectPrompt().then(
+          (projectItem: vscode.QuickPickItem | undefined) => {
+            if (projectItem) {
+              const root = projectItem.description;
+              componentPrompt(
+                root,
+              ).then(
+                async (componentItem: vscode.QuickPickItem | undefined) => {
+                  if (componentItem) {
+                    const name = (await namePrompt(componentItem.label)) || '';
+                    const folder =
+                      (await folderPrompt(
+                        getComponentFolder(componentItem.description),
+                        name,
+                      )) || getComponentFolder(componentItem.description);
 
-              try {
-                await replicate(
-                  root + componentItem.description,
-                  { name, folder },
-                  root,
-                );
-              } catch (e) {
-                vscode.window.showWarningMessage(
-                  'An Error occured while writing.',
-                );
-                console.log(e);
-              }
+                    try {
+                      await replicate(
+                        root + componentItem.description,
+                        { name, folder },
+                        root,
+                      );
+                    } catch (e) {
+                      vscode.window.showWarningMessage(
+                        'An Error occured while writing.',
+                      );
+                      console.log(e);
+                    }
+                  }
+                },
+              );
             }
-          });
-        }
-      });
+          },
+        );
+      }
     },
   );
 
@@ -60,6 +70,11 @@ function projectPrompt() {
       label: f.name,
       description: f.uri.fsPath,
     }));
+  }
+
+  if (projects.length === 1) {
+    // wrapped in a promise to have a single return type
+    return Promise.resolve(projects[0]);
   }
 
   return vscode.window.showQuickPick(projects, options);

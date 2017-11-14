@@ -3,7 +3,7 @@
   "license": "MIT",
   "displayName": "generact",
   "description": "Generate React components by replicating your own.",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "publisher": "Dennitz",
   "repository": {
     "type": "git",
